@@ -35,24 +35,24 @@ public class CartaMasAlta {
 			//System.out.println("Su carta es m s alta, HA GANADO!!");
 			dinero+=apuesta;
 			System.out.println("Su dinero actual es " + dinero);
-			return "Su carta es m s alta HA GANADO!!";
+			return "Su carta es m s alta HA GANADO";
 		}
 		else if(cartaJugador.getValue() < cartaBanca.getValue()) {
-			//System.out.println("Su carta es mas baja, ha perdido :(");
+		
 			dinero-=apuesta;
 			System.out.println("Su dinero actual es " + dinero);
 			return "Su carta es mas baja ha perdido :(";
 		}
 		else {
-			//System.out.println("Su carta tiene el mismo valor que el de la banca, EMPATE");
+			System.out.println("No has perdido ni ganado");
 			return "Su carta tiene el mismo valor que el de la banca EMPATE";
 		}
 	}
 	
-	public static String iniciar(Deck d){
+	public static boolean iniciar(){
 		
-	
-		Deck baraja = d;
+		boolean continuar = true;
+		Deck baraja = new Deck();
 		
 		baraja.shuffle();
 		Scanner scan = new Scanner(System.in);
@@ -78,23 +78,28 @@ public class CartaMasAlta {
 		System.out.println("Su carta es:" + cartaJugador.getSuitAsString() + " " + cartaJugador.getValueAsString());
 		System.out.println("La carta de la banca es:" + cartaBanca.getSuitAsString() + " " + cartaBanca.getValueAsString());
 		Ganador(cartaJugador, cartaBanca, apuesta);
+		continuar = false;
+		break;//esta sentencia se aniade para poder probar en los test un caso en el que el jugador gane, ya que si dejamos que continue el programa se genera un bucle en el test
 		}
 		if(opcion == 2) {
+			continuar = false;
 			break;
 		}
 		}while(dinero>0);
 		if(dinero == 0) {
-			return "Has perdido tu dinero, para volver a jugar venda el coche o la casa";
+			System.out.println("Has perdido tu dinero para volver a jugar venda el coche o la casa");
+			continuar = false;
 		}
-		return "Partida finalizada";
+		System.out.println("Partida finalizada");
+		continuar = false;
+		return continuar;
 	}
 	
 public static void main(String[] args) {
-		String s;
-		Deck d = new Deck();
+	boolean continuar = true;
 	do {
-		s = iniciar(d);
-	}while(s != "Partida finalizada");
+		continuar = iniciar();
+	}while( continuar == true);
 		
 	}
 
